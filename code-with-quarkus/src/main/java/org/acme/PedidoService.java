@@ -14,7 +14,7 @@ public class PedidoService {
         pedidos.add(id);
     }
 
-    public void cancelaPedido(Long id) {
+    public void cancelPedido(Long id) {
         pedidos.remove(id);
     }
 }
