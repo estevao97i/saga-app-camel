@@ -25,7 +25,7 @@ public class SagaRoute extends RouteBuilder {
 
         // Saga
         from("direct:saga").saga().propagation(SagaPropagation.REQUIRES_NEW).log("Iniciando transação")
-                .to("direct:newPedido").log("Criando pedido")
+                .to("direct:newPedido").log("Criando pedido com id ${header.id}")
                 .to("direct:newPedidoValor").log("Reservando crédito")
                 .to("direct:finaliza").log("Feito!");
 
@@ -48,5 +48,10 @@ public class SagaRoute extends RouteBuilder {
         from("direct:cancelPedidoValor").transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .bean(creditoService, "cancelPedidoValor")
                 .log("Credito no pedido ${header.pedidoId} no valor de ${header.valor} cancelado para a saga ${body} ");
+
+        // Finaliza
+        from("direct:finaliza").saga().propagation(SagaPropagation.MANDATORY)
+                .choice()
+                .end();
     }
 }
