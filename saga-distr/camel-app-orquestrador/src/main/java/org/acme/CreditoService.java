@@ -1,0 +1,36 @@
+package org.acme;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.camel.Header;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@ApplicationScoped // para injetar essa classe em outra
+public class CreditoService {
+
+    private int creditoTotal;
+    private Map<Long, Integer> pedido_valor = new HashMap<>();
+
+    public CreditoService() {
+        creditoTotal = 100;
+    }
+
+    public void newPedidoValor(@Header("pedidoId") Long pedidoId, @Header("valor") int valor) {
+        if (valor > creditoTotal) {
+            throw new IllegalStateException("Saldo insuficiente");
+        }
+        creditoTotal = creditoTotal - valor;
+        pedido_valor.put(pedidoId, valor);
+    }
+
+    public void cancelPedidoValor(@Header("id") Long id) {
+        System.out.println("Pedido Falhou. Iniciando cancelamento do pedido");
+//        creditoTotal = creditoTotal + pedido_valor.get(id);
+//        pedido_valor.remove(id);
+    }
+
+    public int getCreditoTotal() {
+        return creditoTotal;
+    }
+}
