@@ -134,7 +134,7 @@
       </activation>
       <properties>
         <skipITs>false</skipITs>
-        <jvm.args>-Dquarkus.http.port=8060</jvm.args>
+        <jvm.args>-Dquarkus.http.port=8063</jvm.args>
         <quarkus.package.type>native</quarkus.package.type>
       </properties>
     </profile>
